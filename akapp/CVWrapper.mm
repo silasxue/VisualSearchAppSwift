@@ -1,32 +1,12 @@
-//
-//  CVWrapper.m
-//  CVOpenTemplate
-//
-//  Created by Washe on 02/01/2013.
-//  Copyright (c) 2013 foundry. All rights reserved.
-//
-
 #import "CVWrapper.h"
 #import "UIImage+OpenCV.h"
 #import "stitching.h"
 #import "UIImage+Rotate.h"
+#import "superpixel.hpp"
 
 
 @implementation CVWrapper
 
-+ (UIImage*) processImageWithOpenCV: (UIImage*) inputImage
-{
-    NSArray* imageArray = [NSArray arrayWithObject:inputImage];
-    UIImage* result = [[self class] processWithArray:imageArray];
-    return result;
-}
-
-+ (UIImage*) processWithOpenCVImage1:(UIImage*)inputImage1 image2:(UIImage*)inputImage2;
-{
-    NSArray* imageArray = [NSArray arrayWithObjects:inputImage1,inputImage2,nil];
-    UIImage* result = [[self class] processWithArray:imageArray];
-    return result;
-}
 
 + (UIImage*) processWithArray:(NSArray*)imageArray
 {
@@ -48,8 +28,13 @@
         }
     }
     NSLog (@"stitching...");
-    cv::Mat stitchedMat = stitch (matImages);
-    UIImage* result =  [UIImage imageWithCVMat:stitchedMat];
+    SLIC* test = new SLIC();
+    test->GenerateSuperpixels(matImages[0], 200);
+    cv::Mat resultPix =  test->GetImgWithContours(cv::Scalar(0, 0, 255));
+//    cv::Mat stitchedMat = stitch (matImages);
+//    UIImage* result =  [UIImage imageWithCVMat:stitchedMat];
+    UIImage* result =  [UIImage imageWithCVMat:resultPix];
+    delete test;
     return result;
 }
 
