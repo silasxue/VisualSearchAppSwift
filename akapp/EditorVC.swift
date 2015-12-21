@@ -46,7 +46,7 @@ class EditorController: UIViewController {
             self.editorView.Green = true
         }
         else{
-            print("off")
+//            print("off")
             msgLabel.text = "Scribble below to highlight regions to exclude"
             self.editorView.Green = false
         }

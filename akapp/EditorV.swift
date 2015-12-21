@@ -22,7 +22,6 @@ class EditorView: UIView {
     var last:CGPoint!
     var Green:Bool = true
     var image:UIImage!
-    
 
 
 
@@ -44,26 +43,26 @@ class EditorView: UIView {
 
         let context = UIGraphicsGetCurrentContext()
         // draw the image
-        if self.image != nil {
+        if self.image != nil   {
             let imageRect:CGRect = AVMakeRectWithAspectRatioInsideRect(image.size,targetBounds);
             self.image.drawInRect(imageRect)
 //            CGContextDrawImage(context, imageRect, image.CGImage);
         }
 //        let imagePoint = CGPointMake(0, 0);image?.drawAtPoint(imagePoint)
-        CGContextSetLineWidth(context,5)
+        CGContextSetLineWidth(context,16)
         CGContextSetLineCap(context, CGLineCap.Round)
         for line in lines{
-            CGContextBeginPath(context)
-            CGContextMoveToPoint(context, line.start.x, line.start.y)
-            CGContextAddLineToPoint(context, line.end.x, line.end.y)
-            if line.color{
-                CGContextSetRGBStrokeColor(context, 0, 1, 0, 1)
+                CGContextBeginPath(context)
+                CGContextMoveToPoint(context, line.start.x, line.start.y)
+                CGContextAddLineToPoint(context, line.end.x, line.end.y)
+                if line.color{
+                    CGContextSetRGBStrokeColor(context, 0, 1, 0, 1)
+                }
+                else{
+                    CGContextSetRGBStrokeColor(context, 1, 0, 0, 1)
+                }
+                CGContextStrokePath(context)
             }
-            else{
-                CGContextSetRGBStrokeColor(context, 1, 0, 0, 1)
-            }
-            CGContextStrokePath(context)
-        }
     }
 }
 

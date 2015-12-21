@@ -87,11 +87,13 @@ class WallPicturesTableViewController: PFQueryTableViewController {
   }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let btn = sender as! UIButton
-        let editorController = segue.destinationViewController as! EditorController
-        editorController.post = posts[btn.tag]
-        editorController.image = images[btn.tag]
-        editorController.index = btn.tag
+        if  sender is UIButton {
+            let btn = sender as! UIButton
+            let editorController = segue.destinationViewController as! EditorController
+            editorController.post = posts[btn.tag]
+            editorController.image = images[btn.tag]
+            editorController.index = btn.tag
+        }
     
     }
   
