@@ -7,7 +7,7 @@ class RegisterViewController: UIViewController {
   @IBOutlet weak var userTextField: UITextField!
   @IBOutlet weak var passwordTextField: UITextField!
   
-  let scrollViewWallSegue = "SignupSuccesful"
+let scrollViewWallSegue = "SignupSuccesful"
   let tableViewWallSegue = "SignupSuccesfulTable"
   
   override func viewDidLoad() {
