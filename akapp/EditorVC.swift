@@ -29,10 +29,11 @@ class EditorController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated);
-        let alert = UIAlertController(title: "Info \(index)", message: post.comment, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-        presentViewController(alert, animated: true, completion: nil)
+//        let alert = UIAlertController(title: "Info \(index)", message: post.comment, preferredStyle: UIAlertControllerStyle.Alert)
+//        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+//        presentViewController(alert, animated: true, completion: nil)
         self.editorView.image = image
+        self.editorView.setNeedsDisplay()
     }
     
     

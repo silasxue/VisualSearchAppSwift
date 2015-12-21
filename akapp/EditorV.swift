@@ -46,7 +46,8 @@ class EditorView: UIView {
         // draw the image
         if self.image != nil {
             let imageRect:CGRect = AVMakeRectWithAspectRatioInsideRect(image.size,targetBounds);
-            CGContextDrawImage(context, imageRect, image.CGImage);
+            self.image.drawInRect(imageRect)
+//            CGContextDrawImage(context, imageRect, image.CGImage);
         }
 //        let imagePoint = CGPointMake(0, 0);image?.drawAtPoint(imagePoint)
         CGContextSetLineWidth(context,5)

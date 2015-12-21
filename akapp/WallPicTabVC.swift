@@ -33,7 +33,7 @@ class WallPostTableViewCell: PFTableViewCell {
 class WallPicturesTableViewController: PFQueryTableViewController {
   
     var posts:[WallPost] = []
-    var images:[UIImage] = []
+    var images:[Int:UIImage] = [:]
     
   // MARK: - Lifecycle
   override func viewDidLoad() {
@@ -61,7 +61,7 @@ class WallPicturesTableViewController: PFQueryTableViewController {
         (imageData: NSData?, error: NSError?) -> Void in
         if (error == nil) {
             let image = UIImage(data:imageData!)
-            self.images.append(image!)
+            self.images[indexPath.row] = image!
         }
     })
     cell.current = self
