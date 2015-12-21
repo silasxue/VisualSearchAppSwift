@@ -12,6 +12,10 @@ class EditorController: UIViewController {
 
     @IBOutlet var clearBtn: UIBarButtonItem!
     @IBOutlet var editorView: EditorView!
+    var index:Int!
+    var post:WallPost!
+    var image:UIImage!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,8 +27,15 @@ class EditorController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated);
+        let alert = UIAlertController(title: "Info \(index)", message: post.comment, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+        presentViewController(alert, animated: true, completion: nil)
+        self.editorView.image = image
+    }
     
-
+    
     @IBAction func colorChange(sender: UISwitch) {
         if sender.on{
             self.editorView.Green = true

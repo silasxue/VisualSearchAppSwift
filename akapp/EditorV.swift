@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class EditorView: UIView {
 
@@ -20,6 +21,11 @@ class EditorView: UIView {
     var lines:[Line] = []
     var last:CGPoint!
     var Green:Bool = true
+    var image:UIImage!
+    
+
+
+
     
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -34,7 +40,15 @@ class EditorView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
+        let targetBounds:CGRect = self.layer.bounds;
+
         let context = UIGraphicsGetCurrentContext()
+        // draw the image
+        if self.image != nil {
+            let imageRect:CGRect = AVMakeRectWithAspectRatioInsideRect(image.size,targetBounds);
+            CGContextDrawImage(context, imageRect, image.CGImage);
+        }
+//        let imagePoint = CGPointMake(0, 0);image?.drawAtPoint(imagePoint)
         CGContextSetLineWidth(context,5)
         CGContextSetLineCap(context, CGLineCap.Round)
         for line in lines{
@@ -51,3 +65,6 @@ class EditorView: UIView {
         }
     }
 }
+
+
+

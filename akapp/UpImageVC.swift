@@ -18,19 +18,18 @@ class UploadImageViewController: UIViewController {
   
   var username: String?
   
-  // MARK: - Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     // Do any additional setup after loading the view.
   }
   
   // MARK: - Actions
   @IBAction func selectPicturePressed(sender: AnyObject) {
-    //Open a UIImagePickerController to select the picture
     let imagePicker = UIImagePickerController()
     imagePicker.delegate = self
     imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+//    imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
     presentViewController(imagePicker, animated: true, completion: nil)
   }
   

@@ -11,55 +11,89 @@ import Parse
 import ParseUI
 
 
+
+class WallPostTableViewCell: PFTableViewCell {
+    @IBOutlet weak var postImage: PFImageView!
+    @IBOutlet weak var createdByLabel: UILabel!
+    @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet var editBtn: UIButton!
+    var current:WallPicturesTableViewController!
+    var post:WallPost!
+    
+//    @IBAction func editBtnPressed(sender: AnyObject) {
+//        let next = current.storyboard!.instantiateViewControllerWithIdentifier("EditorController") as! EditorController
+//        next.post = post
+//        current.presentViewController(next, animated: true, completion: nil)
+//    }
+    
+}
+
+
 class WallPicturesTableViewController: PFQueryTableViewController {
   
+    var posts:[WallPost] = []
+    var images:[UIImage] = []
+    
   // MARK: - Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
   }
   
-  //1
   override func viewWillAppear(animated: Bool) {
     loadObjects()
   }
   
-  //2
   override func queryForTable() -> PFQuery {
     let query = WallPost.query()
     return query!
   }
   
-  //3
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject!) -> PFTableViewCell? {
-    //4
     let cell = tableView.dequeueReusableCellWithIdentifier("WallPostCell", forIndexPath: indexPath) as! WallPostTableViewCell
-    
-    //5
     let wallPost = object as! WallPost
-    
-    //6
     cell.postImage.file = wallPost.image
     cell.postImage.loadInBackground(nil) { percent in
-      cell.progressView.progress = Float(percent)*0.01
-      print("\(percent)%")
+        cell.progressView.progress = Float(percent)*0.01
+        cell.progressView.hidden = true;
     }
-    
-    //7
+    wallPost.image.getDataInBackgroundWithBlock({
+        (imageData: NSData?, error: NSError?) -> Void in
+        if (error == nil) {
+            let image = UIImage(data:imageData!)
+            self.images.append(image!)
+        }
+    })
+    cell.current = self
+    cell.post = wallPost
+    cell.editBtn.tag = indexPath.row
     let creationDate = wallPost.createdAt
     let dateFormatter = NSDateFormatter()
-    dateFormatter.dateFormat = "HH:mm dd/MM yyyy"
+    dateFormatter.dateFormat = "MM/dd/yyyy"
     let dateString = dateFormatter.stringFromDate(creationDate!)
     
     if let username = wallPost.user.username {
-      cell.createdByLabel.text = "Uploaded by: \(username), \(dateString)"
+      cell.createdByLabel.text = "by: \(username), \(dateString)"
     } else {
-      cell.createdByLabel.text = "Uploaded by anonymous: , \(dateString)"
+      cell.createdByLabel.text = "by anonymous: , \(dateString)"
     }
     
     cell.commentLabel.text = wallPost.comment
-    
+    cell.commentLabel.textColor = UIColor.blackColor()
+    cell.createdByLabel.textColor = UIColor.blackColor()
+//    cell.editBtn.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+    posts.append(wallPost)
     return cell
   }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let btn = sender as! UIButton
+        let editorController = segue.destinationViewController as! EditorController
+        editorController.post = posts[btn.tag]
+        editorController.image = images[btn.tag]
+        editorController.index = btn.tag
+    
+    }
   
   // MARK: - Actions
   @IBAction func logOutPressed(sender: AnyObject) {
