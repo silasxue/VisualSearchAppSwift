@@ -12,9 +12,12 @@ class EditorController: UIViewController {
 
     @IBOutlet var clearBtn: UIBarButtonItem!
     @IBOutlet var editorView: EditorView!
+    @IBOutlet var msgLabel: UILabel!
+    
     var index:Int!
     var post:WallPost!
     var image:UIImage!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,10 +42,12 @@ class EditorController: UIViewController {
     
     @IBAction func colorChange(sender: UISwitch) {
         if sender.on{
+            msgLabel.text = "Scribble below to highlight regions of interest"
             self.editorView.Green = true
         }
         else{
             print("off")
+            msgLabel.text = "Scribble below to highlight regions to exclude"
             self.editorView.Green = false
         }
 

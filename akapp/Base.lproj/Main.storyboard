@@ -318,7 +318,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="ZWa-Jt-4fL" customClass="EditorView" customModule="akapp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="414" height="628"/>
+                                <rect key="frame" x="0.0" y="82" width="414" height="551"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -346,17 +346,42 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hyH-zI-cu8">
+                                <rect key="frame" x="0.0" y="633" width="414" height="44"/>
+                                <animations/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="sae-Kh-9lA"/>
+                                    <barButtonItem title="Search" id="FJI-ay-c7o"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="X4K-Vf-Thf"/>
+                                </items>
+                            </toolbar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scribble below to highlight regions of interest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8g-Ei-0Nn">
+                                <rect key="frame" x="-3" y="44" width="421" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Cwt-l9-Bqa"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="ccT-sK-8ev" secondAttribute="trailing" id="28B-I7-CBY"/>
-                            <constraint firstItem="ccT-sK-8ev" firstAttribute="leading" secondItem="ZWa-Jt-4fL" secondAttribute="leading" id="J29-E4-CM2"/>
-                            <constraint firstItem="ccT-sK-8ev" firstAttribute="leading" secondItem="SCg-lt-WnY" secondAttribute="leading" id="Vyy-yW-DDp"/>
-                            <constraint firstItem="ccT-sK-8ev" firstAttribute="trailing" secondItem="ZWa-Jt-4fL" secondAttribute="trailing" id="XKS-cp-0Mb"/>
-                            <constraint firstItem="ccT-sK-8ev" firstAttribute="top" secondItem="gmj-LC-uGe" secondAttribute="bottom" id="bkr-jt-Uuu"/>
-                            <constraint firstItem="ZWa-Jt-4fL" firstAttribute="bottom" secondItem="ziC-m7-zIS" secondAttribute="top" id="dGR-sP-8p3"/>
-                            <constraint firstItem="ccT-sK-8ev" firstAttribute="bottom" secondItem="ZWa-Jt-4fL" secondAttribute="top" id="zaq-xY-UQV"/>
+                            <constraint firstItem="D8g-Ei-0Nn" firstAttribute="centerX" secondItem="ccT-sK-8ev" secondAttribute="centerX" id="FNi-4Z-BfH"/>
+                            <constraint firstItem="ccT-sK-8ev" firstAttribute="leading" secondItem="ZWa-Jt-4fL" secondAttribute="leading" id="FWn-LB-z4S"/>
+                            <constraint firstItem="ccT-sK-8ev" firstAttribute="trailing" secondItem="ZWa-Jt-4fL" secondAttribute="trailing" id="Fwy-kb-OFN"/>
+                            <constraint firstItem="hyH-zI-cu8" firstAttribute="leading" secondItem="ZWa-Jt-4fL" secondAttribute="leading" id="PoN-eG-cvn"/>
+                            <constraint firstAttribute="trailing" secondItem="ccT-sK-8ev" secondAttribute="trailing" id="Puv-vc-Sk2"/>
+                            <constraint firstItem="ccT-sK-8ev" firstAttribute="top" secondItem="gmj-LC-uGe" secondAttribute="bottom" id="SbA-c3-egp"/>
+                            <constraint firstItem="D8g-Ei-0Nn" firstAttribute="top" secondItem="ccT-sK-8ev" secondAttribute="bottom" id="Tn3-Al-euC"/>
+                            <constraint firstItem="ZWa-Jt-4fL" firstAttribute="top" secondItem="D8g-Ei-0Nn" secondAttribute="bottom" constant="8" symbolic="YES" id="Wqf-SQ-agc"/>
+                            <constraint firstItem="ZWa-Jt-4fL" firstAttribute="bottom" secondItem="ziC-m7-zIS" secondAttribute="top" constant="-39" id="dGR-sP-8p3"/>
+                            <constraint firstItem="hyH-zI-cu8" firstAttribute="trailing" secondItem="ZWa-Jt-4fL" secondAttribute="trailing" id="fK7-uP-Pns"/>
+                            <constraint firstItem="ccT-sK-8ev" firstAttribute="leading" secondItem="SCg-lt-WnY" secondAttribute="leading" id="pdj-m3-RTd"/>
+                            <constraint firstItem="hyH-zI-cu8" firstAttribute="top" secondItem="ZWa-Jt-4fL" secondAttribute="bottom" id="s4Y-VV-qzv"/>
+                            <constraint firstItem="D8g-Ei-0Nn" firstAttribute="leading" secondItem="SCg-lt-WnY" secondAttribute="leadingMargin" constant="-23" id="zAv-vl-1VP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="uII-Sn-Ccs"/>
@@ -364,11 +389,12 @@
                     <connections>
                         <outlet property="ClearBtn" destination="Om2-tm-Tj6" id="wVJ-mA-USs"/>
                         <outlet property="editorView" destination="ZWa-Jt-4fL" id="sCI-v4-gjP"/>
+                        <outlet property="msgLabel" destination="D8g-Ei-0Nn" id="eiO-b9-hbD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TpY-Ht-M74" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2461" y="1962.9999999999998"/>
+            <point key="canvasLocation" x="2461" y="1962"/>
         </scene>
         <!--Wall-->
         <scene sceneID="mNs-w1-585">
