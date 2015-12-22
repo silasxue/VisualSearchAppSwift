@@ -14,6 +14,7 @@ class ResultVC: UIViewController, UIScrollViewDelegate {
     @IBOutlet var imageView:UIImageView?
     @IBOutlet var scrollView: UIScrollView!
     var image:UIImage!
+    var post:WallPost!
     var stiched = false
     
     

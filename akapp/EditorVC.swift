@@ -36,6 +36,7 @@ class EditorController: UIViewController {
 //        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
 //        presentViewController(alert, animated: true, completion: nil)
         self.editorView.image = image
+        
         self.editorView.setNeedsDisplay()
     }
     
@@ -61,5 +62,6 @@ class EditorController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let result = segue.destinationViewController as! ResultVC
         result.image = image
+        result.post = post
     }
 }
