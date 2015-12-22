@@ -22,8 +22,8 @@ class EditorView: UIView {
     var last:CGPoint!
     var Green:Bool = true
     var image:UIImage!
-
-
+    var brushSize:CGFloat = 16.0
+    
 
     
     
@@ -33,7 +33,7 @@ class EditorView: UIView {
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         let newpoint = touches.first!.locationInView(self)
-        self.lines.append(Line(_start: last,_end: newpoint,_color: Green))
+        self.lines.append(Line(_start: last,_end: newpoint,_color: Green,_size:brushSize))
         self.last = newpoint
         self.setNeedsDisplay()
     }
@@ -49,10 +49,10 @@ class EditorView: UIView {
 //            CGContextDrawImage(context, imageRect, image.CGImage);
         }
 //        let imagePoint = CGPointMake(0, 0);image?.drawAtPoint(imagePoint)
-        CGContextSetLineWidth(context,16)
         CGContextSetLineCap(context, CGLineCap.Round)
         for line in lines{
                 CGContextBeginPath(context)
+                CGContextSetLineWidth(context,line.size)
                 CGContextMoveToPoint(context, line.start.x, line.start.y)
                 CGContextAddLineToPoint(context, line.end.x, line.end.y)
                 if line.color{

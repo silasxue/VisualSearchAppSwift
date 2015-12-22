@@ -13,6 +13,7 @@ class EditorController: UIViewController {
     @IBOutlet var clearBtn: UIBarButtonItem!
     @IBOutlet var editorView: EditorView!
     @IBOutlet var msgLabel: UILabel!
+    @IBOutlet var stepper: UIStepper!
     
     var index:Int!
     var post:WallPost!
@@ -30,10 +31,11 @@ class EditorController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    override func viewWillAppear(animated: Bool) {
-        self.navigationController?.toolbarHidden = true
-    }
     
+    @IBAction func undoPressed(sender: UIBarButtonItem) {
+        self.editorView.lines.popLast()
+        self.editorView.setNeedsDisplay()
+    }
     
     
     override func viewDidAppear(animated: Bool) {
@@ -42,9 +44,16 @@ class EditorController: UIViewController {
 //        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
 //        presentViewController(alert, animated: true, completion: nil)
         self.editorView.image = image
+        stepper.maximumValue = 100;
+        stepper.minimumValue = 10;
+        stepper.value = 30;
+        stepper.stepValue = 10        
         self.editorView.setNeedsDisplay()
     }
     
+    @IBAction func sizeChanged(sender: UIStepper) {
+        editorView.brushSize = CGFloat(stepper.value)
+    }
     
     @IBAction func colorChange(sender: UISwitch) {
         if sender.on{
@@ -61,8 +70,10 @@ class EditorController: UIViewController {
     
     @IBAction func clearClicked(sender: UIBarButtonItem) {
         self.editorView.lines = []
+        self.editorView.lines.popLast()
         self.editorView.setNeedsDisplay()
     }
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let result = segue.destinationViewController as! ResultVC
