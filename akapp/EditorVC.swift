@@ -29,6 +29,12 @@ class EditorController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.toolbarHidden = true
+    }
+    
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated);
@@ -36,7 +42,6 @@ class EditorController: UIViewController {
 //        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
 //        presentViewController(alert, animated: true, completion: nil)
         self.editorView.image = image
-        
         self.editorView.setNeedsDisplay()
     }
     

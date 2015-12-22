@@ -41,6 +41,7 @@ class WallPicturesTableViewController: PFQueryTableViewController {
   }
   
   override func viewWillAppear(animated: Bool) {
+    self.navigationController?.toolbarHidden = false
     loadObjects()
   }
   
@@ -92,6 +93,9 @@ class WallPicturesTableViewController: PFQueryTableViewController {
             editorController.image = images[btn.tag]
             editorController.index = btn.tag
         }
+    }
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController?.toolbarHidden = true
     }
   
   // MARK: - Actions
