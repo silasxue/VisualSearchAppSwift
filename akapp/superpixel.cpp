@@ -920,7 +920,7 @@ void SLIC::PerformSLICO_ForGivenK(
     if(perturbseeds) DetectLabEdges(m_lvec, m_avec, m_bvec, m_width, m_height, edgemag);
     GetLABXYSeeds_ForGivenK(kseedsl, kseedsa, kseedsb, kseedsx, kseedsy, K, perturbseeds, edgemag);
     
-    int STEP = sqrt(double(sz)/double(K)) + 2.0;//adding a small value in the even the STEP size is too small.
+    int STEP = 50;//adding a small value in the even the STEP size is too small.
     //PerformSuperpixelSLIC(kseedsl, kseedsa, kseedsb, kseedsx, kseedsy, klabels, STEP, edgemag, m);
     PerformSuperpixelSegmentation_VariableSandM(kseedsl,kseedsa,kseedsb,kseedsx,kseedsy,klabels,STEP,10);
     numlabels = (int)kseedsl.size();
@@ -971,7 +971,7 @@ void SLIC::PerformSLICO_ForGivenK(
     if(perturbseeds) DetectLabEdges(m_lvec, m_avec, m_bvec, m_width, m_height, edgemag);
     GetLABXYSeeds_ForGivenK(kseedsl, kseedsa, kseedsb, kseedsx, kseedsy, K, perturbseeds, edgemag);
     
-    int STEP = sqrt(double(sz)/double(K)) + 2.0;//adding a small value in the even the STEP size is too small.
+    int STEP = 50;//adding a small value in the even the STEP size is too small.
     //PerformSuperpixelSLIC(kseedsl, kseedsa, kseedsb, kseedsx, kseedsy, klabels, STEP, edgemag, m);
     PerformSuperpixelSegmentation_VariableSandM(kseedsl,kseedsa,kseedsb,kseedsx,kseedsy,klabels,STEP,10);
     numlabels = (int)kseedsl.size();
@@ -982,30 +982,38 @@ void SLIC::PerformSLICO_ForGivenK(
     if(nlabels) delete [] nlabels;
 }
 
+
+
 void SLIC::GenerateSuperpixels(cv::Mat& img, UINT numSuperpixels)
 {
     if (img.empty()) {
         exit(-1);
     }
-    
     int height = img.rows;
     int width = img.cols;
-    int sz = height * width;
+    int max_dim = ( width >= height ) ? width : height;
+    float scale = 500.0/ max_dim;
+    cv::Rect roi;
+    if ( width >= height )
+    {
+        roi.width = 500;
+        roi.x = 0;
+        roi.height = height * scale;
+        roi.y = 0; //        roi.y = ( 500 - roi.height ) / 2;
+    }
+    else
+    {
+        roi.y = 0;
+        roi.height = 500;
+        roi.width = width * scale; //        roi.x = ( 500 - roi.width ) / 2;
+        roi.x = 0;
+    }
+    cv::Mat scaled = cv::Mat::zeros( roi.height, roi.width, img.type() );
+    cv::resize( img, scaled(roi),roi.size());
+    int sz = 500 * 500;
     label = new int[sz];
-    if (img.channels() == 1) {
-        type = GRAY;
-    }
-    else if (img.channels() == 3) {
-        type = RGB;
-    }
-    if (type == GRAY) {
-        Mat2Buffer(img, bufferGray);
-        PerformSLICO_ForGivenK(bufferGray, img.cols, img.rows, label, sz, numSuperpixels, 10);
-    }
-    else if (type == RGB) {
-        Mat2Buffer(img, bufferRGB);
-        PerformSLICO_ForGivenK(bufferRGB, img.cols, img.rows, label, sz, numSuperpixels, 10);
-    }
+    Mat2Buffer(scaled, bufferRGB);
+    PerformSLICO_ForGivenK(bufferRGB, scaled.cols, scaled.rows, label, sz, numSuperpixels, 10);
 }
 
 // 

@@ -1,6 +1,5 @@
 #import "CVWrapper.h"
 #import "UIImage+OpenCV.h"
-#import "stitching.h"
 #import "UIImage+Rotate.h"
 #import "superpixel.hpp"
 
@@ -27,12 +26,10 @@
             matImages.push_back(matImage);
         }
     }
-    NSLog (@"stitching...");
+    NSLog (@"computing superpixels...");
     SLIC* test = new SLIC();
     test->GenerateSuperpixels(matImages[0], 200);
     cv::Mat resultPix =  test->GetImgWithContours(cv::Scalar(0, 0, 255));
-//    cv::Mat stitchedMat = stitch (matImages);
-//    UIImage* result =  [UIImage imageWithCVMat:stitchedMat];
     UIImage* result =  [UIImage imageWithCVMat:resultPix];
     delete test;
     return result;
