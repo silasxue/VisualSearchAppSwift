@@ -14,7 +14,8 @@ class EditorController: UIViewController {
     @IBOutlet var editorView: EditorView!
     @IBOutlet var msgLabel: UILabel!
     @IBOutlet var stepper: UIStepper!
-    
+    @IBOutlet var imageView: UIImageView!
+
     var index:Int!
     var post:WallPost!
     var image:UIImage!
@@ -34,6 +35,7 @@ class EditorController: UIViewController {
     
     @IBAction func undoPressed(sender: UIBarButtonItem) {
         self.editorView.lines.popLast()
+        self.editorView.points.popLast()
         self.editorView.setNeedsDisplay()
     }
     
@@ -47,7 +49,9 @@ class EditorController: UIViewController {
         stepper.maximumValue = 100;
         stepper.minimumValue = 10;
         stepper.value = 30;
-        stepper.stepValue = 10        
+        stepper.stepValue = 10
+        self.imageView.image = image
+        self.imageView.contentMode = UIViewContentMode.ScaleAspectFit;
         self.editorView.setNeedsDisplay()
     }
     
@@ -70,7 +74,7 @@ class EditorController: UIViewController {
     
     @IBAction func clearClicked(sender: UIBarButtonItem) {
         self.editorView.lines = []
-        self.editorView.lines.popLast()
+        self.editorView.points = []
         self.editorView.setNeedsDisplay()
     }
     

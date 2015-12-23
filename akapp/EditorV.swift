@@ -19,16 +19,19 @@ class EditorView: UIView {
     }
     */
     var lines:[Line] = []
+    var points:[Epoint] = []
     var last:CGPoint!
     var Green:Bool = true
     var image:UIImage!
-    var brushSize:CGFloat = 16.0
+    var brushSize:CGFloat = 45.0
     
 
     
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.last = touches.first!.locationInView(self)
+        self.points.append(Epoint(_point:touches.first!.locationInView(self),_color:Green,_size:brushSize))
+        self.setNeedsDisplay()
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -39,27 +42,33 @@ class EditorView: UIView {
     }
     
     override func drawRect(rect: CGRect) {
-        let targetBounds:CGRect = self.layer.bounds;
-
         let context = UIGraphicsGetCurrentContext()
-        // draw the image
-        if self.image != nil   {
-            let imageRect:CGRect = AVMakeRectWithAspectRatioInsideRect(image.size,targetBounds);
-            self.image.drawInRect(imageRect)
-//            CGContextDrawImage(context, imageRect, image.CGImage);
-        }
-//        let imagePoint = CGPointMake(0, 0);image?.drawAtPoint(imagePoint)
+//        if self.image != nil   {
+//        let targetBounds:CGRect = self.layer.bounds;
+//            let imageRect:CGRect = AVMakeRectWithAspectRatioInsideRect(image.size,targetBounds);
+//            self.image.drawInRect(imageRect)
+//        }
         CGContextSetLineCap(context, CGLineCap.Round)
+        for p in points{
+            let r = CGRectMake(p.point.x - (p.size/2), p.point.y - (p.size/2), p.size, p.size);
+            if p.color{
+                CGContextSetFillColor(context, [0.2,1,0.2,0.5]);
+            }
+            else{
+                CGContextSetFillColor(context, [1,0.2,0.3,0.5]);
+            }
+            CGContextFillEllipseInRect(context,r)
+        }
         for line in lines{
                 CGContextBeginPath(context)
                 CGContextSetLineWidth(context,line.size)
                 CGContextMoveToPoint(context, line.start.x, line.start.y)
                 CGContextAddLineToPoint(context, line.end.x, line.end.y)
                 if line.color{
-                    CGContextSetRGBStrokeColor(context, 0, 1, 0, 1)
+                    CGContextSetRGBStrokeColor(context, 0.2, 1, 0.2, 0.5)
                 }
                 else{
-                    CGContextSetRGBStrokeColor(context, 1, 0, 0, 1)
+                    CGContextSetRGBStrokeColor(context, 1, 0.2, 0.3, 0.5)
                 }
                 CGContextStrokePath(context)
             }

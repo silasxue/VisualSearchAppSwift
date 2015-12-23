@@ -24,3 +24,17 @@ class Line{
     }
     
 }
+
+class Epoint{
+    var point:CGPoint
+    var color:Bool
+    var size:CGFloat
+    
+    init(_point:CGPoint,_color:Bool,_size: CGFloat)
+    {
+        point = _point
+        color = _color
+        size = _size
+    }
+
+}
