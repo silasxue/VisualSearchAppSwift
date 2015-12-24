@@ -97,6 +97,12 @@ class WallPicturesTableViewController: PFQueryTableViewController {
     override func viewWillDisappear(animated: Bool) {
         self.navigationController?.toolbarHidden = true
     }
+    
+    deinit{
+        posts.removeAll()
+        images.removeAll()
+        print("wall view deinitialized")        
+    }
   
   // MARK: - Actions
   @IBAction func logOutPressed(sender: AnyObject) {

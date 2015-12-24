@@ -19,7 +19,7 @@ class EditorController: UIViewController {
     var index:Int!
     var post:WallPost!
     var image:UIImage!
-    
+    var brushSizeKey = "BrushSize"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,17 +39,23 @@ class EditorController: UIViewController {
         self.editorView.setNeedsDisplay()
     }
     
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated);
-//        let alert = UIAlertController(title: "Info \(index)", message: post.comment, preferredStyle: UIAlertControllerStyle.Alert)
-//        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-//        presentViewController(alert, animated: true, completion: nil)
+        stepper.maximumValue = 100
+        stepper.minimumValue = 10
+        stepper.stepValue = 5
+        let bsize = NSUserDefaults.standardUserDefaults().doubleForKey(brushSizeKey);
+        if bsize == 0 {
+            stepper.value = 30;
+            NSUserDefaults.standardUserDefaults().setDouble(stepper.value, forKey: brushSizeKey)
+        }
+        else{
+            stepper.value = bsize
+        }
+        self.editorView.brushSize = CGFloat(stepper.value)
         self.editorView.image = image
-        stepper.maximumValue = 100;
-        stepper.minimumValue = 10;
-        stepper.value = 30;
-        stepper.stepValue = 10
         self.imageView.image = image
         self.imageView.contentMode = UIViewContentMode.ScaleAspectFit;
         self.editorView.setNeedsDisplay()
@@ -57,17 +63,19 @@ class EditorController: UIViewController {
     
     @IBAction func sizeChanged(sender: UIStepper) {
         editorView.brushSize = CGFloat(stepper.value)
+        NSUserDefaults.standardUserDefaults().setDouble(stepper.value, forKey: brushSizeKey)
     }
     
     @IBAction func colorChange(sender: UISwitch) {
         if sender.on{
-            msgLabel.text = "Scribble below to highlight regions of interest"
+            msgLabel.text = "Highlight regions of interest"
             self.editorView.Green = true
+            msgLabel.textColor = UIColor.blackColor()
         }
         else{
-//            print("off")
-            msgLabel.text = "Scribble below to highlight regions to exclude"
+            msgLabel.text = "Highlight regions to exclude"
             self.editorView.Green = false
+            msgLabel.textColor = UIColor.redColor()
         }
 
     }

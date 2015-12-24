@@ -12,66 +12,66 @@ import Parse
 
 class UploadImageViewController: UIViewController {
   
-  @IBOutlet weak var imageToUpload: UIImageView!
-  @IBOutlet weak var commentTextField: UITextField!
-  @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet weak var imageToUpload: UIImageView!
+    @IBOutlet weak var commentTextField: UITextField!
+    @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet var searchBtn: UIButton!
+    @IBOutlet var selectBtn: UIButton!
   
   var username: String?
-  
+  var wallPost: WallPost?
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
   }
+    
+   override func viewDidAppear(animated: Bool) {
+    if imageToUpload.image == nil{
+        searchBtn.hidden = true
+    }
+   }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if  segue.destinationViewController is EditorController  {
+            commentTextField.resignFirstResponder()
+            navigationItem.rightBarButtonItem?.enabled = false
+            loadingSpinner.startAnimating()
+            let pictureData = UIImagePNGRepresentation(imageToUpload.image!)
+            let file = PFFile(name: "image", data: pictureData!)
+            
+            file!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
+                if succeeded {
+                    self.saveWallPost(file!)
+                } else if let error = error {
+                    self.showErrorView(error)
+                }
+            })
+            let editorController = segue.destinationViewController as! EditorController
+            editorController.post = nil
+            editorController.image = imageToUpload.image
+            editorController.index = 0
+        }
+    }
+ 
+   
   
-  // MARK: - Actions
   @IBAction func selectPicturePressed(sender: AnyObject) {
     let imagePicker = UIImagePickerController()
     imagePicker.delegate = self
-    imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-//    imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
+    imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary  //    imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
     presentViewController(imagePicker, animated: true, completion: nil)
   }
   
-  @IBAction func sendPressed(sender: AnyObject) {
-    commentTextField.resignFirstResponder()
     
-    //Disable the send button until we are ready
-    navigationItem.rightBarButtonItem?.enabled = false
     
-    loadingSpinner.startAnimating()
-    
-    //TODO: Upload a new picture
-    let pictureData = UIImagePNGRepresentation(imageToUpload.image!)
-
-    //1
-    let file = PFFile(name: "image", data: pictureData!)
-    print("uploading picture")
-    file!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
-      if succeeded {
-        //2
-        self.saveWallPost(file!)
-      } else if let error = error {
-        //3
-        self.showErrorView(error)
-      }
-      }, progressBlock: { percent in
-        //4
-        print("Uploaded: \(percent)%")
-    })
-  }
-  
   func saveWallPost(file: PFFile)
   {
-    //1
-    let wallPost = WallPost(image: file, user: PFUser.currentUser()!, comment: self.commentTextField.text)
-    //2
-    wallPost.saveInBackgroundWithBlock{ succeeded, error in
+    wallPost = WallPost(image: file, user: PFUser.currentUser()!, comment: self.commentTextField.text)
+    wallPost!.saveInBackgroundWithBlock{ succeeded, error in
       if succeeded {
-        //3
-        self.navigationController?.popViewControllerAnimated(true)
+        self.loadingSpinner.stopAnimating()
+//            self.navigationController?.popViewControllerAnimated(true)
       } else {
-        //4
         if let _ = error?.userInfo["error"] as? String {
           self.showErrorView(error!)
         }
@@ -82,10 +82,11 @@ class UploadImageViewController: UIViewController {
 }
 
 extension UploadImageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-  
   func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-    //Place the image in the imageview
     imageToUpload.image = image
+    searchBtn.hidden = false
+    selectBtn.titleLabel?.text = "Change picture"
+    selectBtn.setNeedsDisplay()
     picker.dismissViewControllerAnimated(true, completion: nil)
   }
 }

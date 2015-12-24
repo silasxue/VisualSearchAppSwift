@@ -33,6 +33,8 @@ class WallPost: PFObject, PFSubclassing {
         let query = PFQuery(className: WallPost.parseClassName()) //1
         query.includeKey("user") //2
         query.orderByDescending("createdAt") //3
+        query.limit = 10
+        query.whereKey("user", equalTo: (PFUser.currentUser())!)
         return query
     }
     
